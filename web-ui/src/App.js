@@ -6,47 +6,26 @@ import { ThemeProvider } from 'styled-components';
 import axios from 'axios';
 
 
-// query db chain and return answer
-class DBAnswer extends Component {
+// query db or docs chain and return answer
+class Answer extends Component {
 
   constructor(props) {
     super(props);
 
     this.state = {
+      type: props.type,
       dbResponse: ''
     };
   }
   
   async componentWillMount() {
-    const res = await axios.get('http://localhost:5000/db_chain_query');
+    const res = await axios.get(`http://localhost:5000/${this.props.type}_chain_query`);
     this.setState({dbResponse: res.data})
   }
 
   render() {
     const { dbResponse } = this.state;
     return <div>{dbResponse}</div>
-  }
-}
-
-// query docs chain and return answer
-class DocsAnswer extends Component {
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      docsResponse: ''
-    };
-  }
-  
-  async componentWillMount() {
-    const res = await axios.get('http://localhost:5000/docs_chain_query');
-    this.setState({docsResponse: res.data})
-  }
-
-  render() {
-    const { docsResponse } = this.state;
-    return <div>{docsResponse}</div>
   }
 }
 
@@ -81,7 +60,7 @@ const steps = [
   },
   {
     id: 'database-res',
-    component: <DBAnswer/>,
+    component: <Answer type={'db'}/>,
     asMessage: true,
     trigger: '1',
   },
@@ -97,7 +76,7 @@ const steps = [
   },
   {
     id: 'docs-res',
-    component: <DocsAnswer/>,
+    component: <Answer type={'docs'}/>,
     asMessage: true,
     trigger: '1',
   }
