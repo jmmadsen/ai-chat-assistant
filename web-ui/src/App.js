@@ -1,9 +1,56 @@
 import './App.css';
 
+import React, { Component } from 'react';
 import ChatBot from 'react-simple-chatbot';
 import { ThemeProvider } from 'styled-components';
+import axios from 'axios';
 
 
+// query db chain and return answer
+class DBAnswer extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      dbResponse: ''
+    };
+  }
+  
+  async componentWillMount() {
+    const res = await axios.get('http://localhost:5000/db_chain_query');
+    this.setState({dbResponse: res.data})
+  }
+
+  render() {
+    const { dbResponse } = this.state;
+    return <div>{dbResponse}</div>
+  }
+}
+
+// query docs chain and return answer
+class DocsAnswer extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      docsResponse: ''
+    };
+  }
+  
+  async componentWillMount() {
+    const res = await axios.get('http://localhost:5000/docs_chain_query');
+    this.setState({docsResponse: res.data})
+  }
+
+  render() {
+    const { docsResponse } = this.state;
+    return <div>{docsResponse}</div>
+  }
+}
+
+// message chain from bot
 const steps = [
   {
     id: '0',
@@ -34,7 +81,8 @@ const steps = [
   },
   {
     id: 'database-res',
-    message: 'restart!',
+    component: <DBAnswer/>,
+    asMessage: true,
     trigger: '1',
   },
   {
@@ -49,7 +97,8 @@ const steps = [
   },
   {
     id: 'docs-res',
-    message: 'restart!',
+    component: <DocsAnswer/>,
+    asMessage: true,
     trigger: '1',
   }
 ];
