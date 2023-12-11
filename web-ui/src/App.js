@@ -23,10 +23,7 @@ class Answer extends Component {
     this.setState({dbResponse: res.data})
   }
 
-  render() {
-    const { dbResponse } = this.state;
-    return <div>{dbResponse}</div>
-  }
+  render = () => <div>{this.state.dbResponse}</div>
 }
 
 // message chain from bot
@@ -44,8 +41,8 @@ const steps = [
   {
     id: '2',
     options: [
-      { value: 'Query the database', label: 'Query the database', trigger: 'database' },
-      { value: 'General question', label: 'General question', trigger: 'docs' }
+      { value: 'General question', label: 'General question', trigger: 'docs' },
+      { value: 'Query the database', label: 'Query the database', trigger: 'database' }
     ],
   },
   {
