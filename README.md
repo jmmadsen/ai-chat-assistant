@@ -8,7 +8,7 @@ The bot in this project has been "trained" on a library of documents about the 2
 
 ## How Does It Work?
 ai-chat-assistant leverages the [Langchain library](https://www.langchain.com) to interact with ChatGPT. To answer qualitative questions, it loads various files (PDF, JSON, etc.) from a local directory. It then chunks and embeds these into a Vector Store database to optimize training and response performance.
-![Screenshot vector store sharding](https://python.langchain.com/assets/images/vector_stores-9dc1ecb68c4cb446df110764c9cc07e0.jpg)
+![Screenshot vector store sharding](https://python.langchain.com/assets/images/vector_stores-125d1675d58cfb46ce9054c9019fea72.jpg)
 
 Obviously, this simple use case is only for the 2023 MLB season - but it can be easily extended on your own using whatever relevant documents you want to provide.
 
