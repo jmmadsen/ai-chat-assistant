@@ -29,3 +29,8 @@ Functions to interact with Langchain and the LLM are stored in the `langchain_fu
 3. Navigate to `localhost` in your browser URL to access the chatbot
 
 ### Local
+1. Clone the repository onto your local machine
+2. In a terminal window, navigate to the `web-ui` directory and run `npm start`
+3. In another terminal window, navigate to the `openai-api` directory and run `flask --app app run`
+4. In a third terminal window, run `docker compose -f docker compose -f dc-local-db.yml up` from the root directory to start the database
+5. Navigate to `localhost:3000` in your browser URL to access the chatbot
