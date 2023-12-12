@@ -25,3 +25,8 @@ services:
     restart: always
     ports: 
       - "5000:5000"
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=postgres
+      - POSTGRES_HOST=db
