@@ -1,10 +1,15 @@
 FROM python:3.10.4-slim-buster
 
-WORKDIR /python-docker
+COPY requirements.txt /
 
-COPY requirements.txt requirements.txt
-RUN pip3 install -r requirements.txt
+RUN pip3 install --upgrade pip
 
-COPY . .
+COPY . /app
 
-CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0"]
+WORKDIR /app
+
+RUN pip3 install -r /requirements.txt
+
+EXPOSE 5000
+
+CMD ["gunicorn", "--config", "gunicorn_config.py", "app:app"]
