@@ -6,9 +6,15 @@ from flask_cors import CORS
 from utils.exception_handler import exception_handler
 from utils.postgres_logging import postgres_logging
 
+# langchain functions
+from langchain_functions.create_vector_db import create_vector_db
+
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
+
+# instantiate vectordb to store document embeddings to query
+vectordb = create_vector_db()
 
 # ping health of app
 @app.route("/health_check")
