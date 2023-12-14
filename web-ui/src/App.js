@@ -14,13 +14,14 @@ class Answer extends Component {
 
     this.state = {
       type: props.type,
-      dbResponse: ''
+      dbResponse: 'Thinking, give me a second...'
     };
   }
   
-  async componentWillMount() {
+  async componentDidMount() {
     const res = await axios.get(`http://localhost:5000/${this.props.type}_chain_query`);
-    this.setState({dbResponse: res.data})
+    // after receiving API response and setting state, trigger next message (changing waitAction)
+    this.setState({dbResponse: res.data}, () => this.props.triggerNextStep())
   }
 
   render = () => <div>{this.state.dbResponse}</div>
@@ -31,12 +32,12 @@ const steps = [
   {
     id: '0',
     message: 'Hey there! I am your 2023 MLB season AI assistant.',
-    trigger: '1',
+    trigger: '1'
   },
   {
     id: '1',
     message: 'Would you like to query the batting database, or ask a general question about the season?',
-    trigger: '2',
+    trigger: '2'
   },
   {
     id: '2',
@@ -48,34 +49,36 @@ const steps = [
   {
     id: 'database',
     message: `Please enter your question about the season's batting stats:`,
-    trigger: 'database-q',
+    trigger: 'database-q'
   },
   {
     id: 'database-q',
     user: true,
-    trigger: 'database-res',
+    trigger: 'database-res'
   },
   {
     id: 'database-res',
     component: <Answer type={'db'}/>,
     asMessage: true,
     trigger: '1',
+    waitAction: true
   },
   {
     id: 'docs',
     message: `Please enter your question about this season:`,
-    trigger: 'docs-q',
+    trigger: 'docs-q'
   },
   {
     id: 'docs-q',
     user: true,
-    trigger: 'docs-res',
+    trigger: 'docs-res'
   },
   {
     id: 'docs-res',
     component: <Answer type={'docs'}/>,
     asMessage: true,
     trigger: '1',
+    waitAction: true
   }
 ];
 
