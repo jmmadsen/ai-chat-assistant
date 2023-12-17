@@ -13,18 +13,17 @@ class Answer extends Component {
     super(props);
 
     this.state = {
-      type: props.type,
-      dbResponse: 'Thinking, give me a second...'
+      type: props.type
     };
   }
   
   async componentDidMount() {
     const res = await axios.get(`http://localhost:5000/${this.props.type}_chain_query`);
-    // after receiving API response and setting state, trigger next message (changing waitAction)
-    this.setState({dbResponse: res.data}, () => this.props.triggerNextStep())
+    // after receiving API response, trigger next message (changing waitAction)
+    this.props.triggerNextStep({ value: res.data, trigger: `${this.props.type}-res` });
   }
 
-  render = () => <div>{this.state.dbResponse}</div>
+  render = () => <div>Thinking, give me a second...</div>
 }
 
 // message chain from bot
@@ -54,13 +53,13 @@ const steps = [
   {
     id: 'database-q',
     user: true,
-    trigger: 'database-res'
+    trigger: 'database-wait'
   },
   {
-    id: 'database-res',
+    id: 'database-wait',
     component: <Answer type={'db'}/>,
     asMessage: true,
-    trigger: '1',
+    trigger: 'database-res',
     waitAction: true
   },
   {
@@ -71,14 +70,24 @@ const steps = [
   {
     id: 'docs-q',
     user: true,
-    trigger: 'docs-res'
+    trigger: 'docs-wait'
+  },
+  {
+    id: 'docs-wait',
+    component: <Answer type={'docs'}/>,
+    asMessage: true,
+    trigger: 'docs-res',
+    waitAction: true
+  },
+  {
+    id: 'database-res',
+    message: '{previousValue}',
+    trigger: 1
   },
   {
     id: 'docs-res',
-    component: <Answer type={'docs'}/>,
-    asMessage: true,
-    trigger: '1',
-    waitAction: true
+    message: '{previousValue}',
+    trigger: 1
   }
 ];
 
