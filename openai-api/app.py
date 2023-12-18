@@ -10,6 +10,7 @@ from utils.postgres_logging import postgres_logging
 # langchain functions
 from langchain_functions.create_vector_db import create_vector_db
 from langchain_functions.create_docs_chain import create_docs_chain
+from langchain_functions.create_sql_chain import create_sql_chain
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -46,21 +47,23 @@ def docs_chain_query():
         })
 
 # ask quantitative questions against Postgresql - NLP to SQL to NLP
-@app.route("/db_chain_query")
+@app.route("/db_chain_query", methods = ['POST'])
 def db_chain_query():
     try:
-        return "db chain"
+        inbound = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        sql, res, total_tokens, total_cost = create_sql_chain(request.json['message'])
+        return res
     except Exception as err:
         error = exception_handler(err)
         return error
     finally:
         postgres_logging({
-            'prompt': 'test',
-            'response': 'test',
-            'inbound': '2016-06-22 19:10:25-07',
-            'outbound': '2016-06-22 19:10:25-07',
-            'error': False,
-            'generated_sql': 'test',
-            'total_tokens': 2.5,
-            'total_cost': 3.5
+            'prompt': request.json['message'],
+            'response': res if 'res' in locals() else error,
+            'inbound': inbound,
+            'outbound': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            'error': True if 'error' in locals() else False,
+            'generated_sql': sql if 'sql' in locals() else None,
+            'total_tokens': total_tokens if 'total_tokens' in locals() else None,
+            'total_cost': total_cost if 'total_cost' in locals() else None
         })
