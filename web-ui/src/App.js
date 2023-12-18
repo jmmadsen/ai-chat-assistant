@@ -1,32 +1,27 @@
 import './App.css';
 
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import ChatBot from 'react-simple-chatbot';
 import { ThemeProvider } from 'styled-components';
 import axios from 'axios';
 
 
-// query db or docs chain and return answer
-class Answer extends Component {
+// custom component for chat bot step
+const Answer = (props) => {
 
-  constructor(props) {
-    super(props);
+  useEffect(() => {
+    const fetchData = async() => {
+      const res = await axios.post(`http://localhost:5000/${props.type}_chain_query`, { message: props.previousStep.message });
+      // after receiving API response, trigger next message (changing waitAction)
+      props.triggerNextStep({ value: res.data, trigger: `${props.type}-res` });
+    }
+    fetchData()
+  }, [])
 
-    this.state = {
-      type: props.type
-    };
-  }
-  
-  async componentDidMount() {
-    const res = await axios.get(`http://localhost:5000/${this.props.type}_chain_query`);
-    // after receiving API response, trigger next message (changing waitAction)
-    this.props.triggerNextStep({ value: res.data, trigger: `${this.props.type}-res` });
-  }
-
-  render = () => <div>Thinking, give me a second...</div>
+  return (<div>Thinking, give me a second...</div>)
 }
 
-// message chain from bot
+// message loop from bot
 const steps = [
   {
     id: '0',
@@ -91,6 +86,7 @@ const steps = [
   }
 ];
 
+// chat coloring
 const theme = {
   background: '#C9FF8F',
   headerBgColor: '#197B22',
@@ -102,7 +98,7 @@ const theme = {
   userFontColor: 'white',
 };
 
-function App() {
+const App = () => {
   return (
     <header className="App-header">
       <ThemeProvider theme={theme}>
@@ -110,7 +106,7 @@ function App() {
           <ChatBot steps={steps} />
       </ThemeProvider>
     </header>
-);
+  );
 }
 
 export default App;
