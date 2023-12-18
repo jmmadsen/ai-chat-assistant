@@ -47,7 +47,7 @@ def docs_chain_query():
         })
 
 # ask quantitative questions against Postgresql - NLP to SQL to NLP
-@app.route("/db_chain_query", methods = ['POST'])
+@app.route("/db_chain_query", methods=['POST'])
 def db_chain_query():
     try:
         inbound = datetime.now().strftime('%Y-%m-%d %H:%M:%S')

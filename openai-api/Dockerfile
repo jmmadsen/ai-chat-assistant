@@ -1,4 +1,4 @@
-FROM python:3.10.4-slim-buster
+FROM python:3.11.6-slim-buster
 
 COPY requirements.txt /
 
