@@ -54,7 +54,7 @@ const steps = [
     id: 'database-wait',
     component: <Answer type={'db'}/>,
     asMessage: true,
-    trigger: 'database-res',
+    trigger: 'db-res',
     waitAction: true
   },
   {
@@ -75,7 +75,7 @@ const steps = [
     waitAction: true
   },
   {
-    id: 'database-res',
+    id: 'db-res',
     message: '{previousValue}',
     trigger: 1
   },
