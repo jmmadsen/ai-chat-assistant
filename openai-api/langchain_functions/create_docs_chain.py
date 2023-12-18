@@ -24,7 +24,8 @@ def create_docs_chain(vectordb, prompt):
   
   docs_chain = RetrievalQA.from_chain_type(
     llm,
-    retriever = vectordb.as_retriever(search_kwargs={'k': 6}),
+    chain_type='stuff',
+    retriever = vectordb.as_retriever(search_type="similarity", search_kwargs={'k': 6}),
     return_source_documents = True,
     verbose = True,
     chain_type_kwargs = chain_type_kwargs
