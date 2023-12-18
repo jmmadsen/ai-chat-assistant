@@ -3,11 +3,11 @@ import glob
 import logging
 logging.getLogger().setLevel(logging.INFO)
 
-import chromadb
 from langchain.document_loaders import PyPDFLoader, UnstructuredHTMLLoader
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.vectorstores import Chroma
 from langchain.embeddings import OpenAIEmbeddings
+# from langchain.callbacks import get_openai_callback
 
 def create_vector_db():
     documents = []
@@ -26,15 +26,17 @@ def create_vector_db():
     chunked_documents = text_splitter.split_documents(documents)
 
     # connect to OpenAI Embeddings
-    embeddings = OpenAIEmbeddings(openai_api_key = os.environ.get('OPENAI_API_KEY'))
+    embeddings = OpenAIEmbeddings(openai_api_key = os.environ.get('OPENAI_API_KEY'), model = "text-embedding-ada-002")
     
     # connect if db already exists, else load documents into vectordb
     if os.path.isdir(os.getcwd() + '/data'):
+        print ('loaded data!')
         vectordb = Chroma(
             persist_directory = './data',
             embedding_function = embeddings
         )
     else:
+        print('creating vectordb...')
         vectordb = Chroma.from_documents(
             chunked_documents,
             embedding = embeddings,
