@@ -1,10 +1,6 @@
 # ai-chat-assistant
 Leveraging Langchain to create a quantitative and qualitative GenAI chatbot
 
-RUN CHROMA IN CONTAINER
-RUN UNSTRUCTURED IN CONTAINER https://pypi.org/project/unstructured/
-THEN REMOVE FROM REQUIREMENTS.TXT
-
 ## Overview
 This project shows how you can use ChatGPT to query documents for qualitative information, as well as querying databases for quantitative information. Users can interact with a chatbot using natural language to find the information they need.
 
@@ -27,14 +23,27 @@ The goal of this project is to show how it can be extended for more practical us
 Functions to interact with Langchain and the LLM are stored in the `langchain_functions` folder. Utility functions for connecting to Postgresql and logging errors are stored in the `utils` folder. MLB information documents are stored in the `training_scripts` folder. The Postgresql datbase is seeded on start with batting average data, and the table needed for logging ChatGPT messages.
 
 ## How Do I Run This?
+### Prerequisites
+In order to run this project, you will your own OpenAI API Key. If you have not yet created a login and API Key, follow the [instructions here](https://www.howtogeek.com/885918/how-to-get-an-openai-api-key/#:~:text=To%20get%20an%20API%20Key,this%20button%20to%20get%20one.).
+
+Additionally, the Free Tier of OpenAI API is too low for this project. This program is still *very inexpensive* to run (probably will use less than $.10), but without funding your account you will hit the [Free Tier API Limits](https://platform.openai.com/docs/guides/rate-limits?context=tier-free). Please make sure you have funded your OpenAI API account - probably at least $.50 will be sufficient.
+
 ### Docker
 1. Clone the repository onto your local machine
-2. From the root directory, run `docker compose up`
-3. Navigate to `localhost` in your browser URL to access the chatbot
+2. Add your API Key from the instructions above to the `docker-compose.yml` file in the root folder, after the `- OPENAI_API_KEY=` environment variable. Save this file after updating
+3. From the root directory, run `docker compose up`
+4. Navigate to `localhost` in your browser URL to access the chatbot
 
 ### Local
 1. Clone the repository onto your local machine
 2. In a terminal window, navigate to the `web-ui` directory and run `npm start`
 3. In another terminal window, navigate to the `openai-api` directory and run `flask --app app run`
-4. In a third terminal window, run `docker compose -f docker compose -f dc-local-db.yml up` from the root directory to start the database
-5. Navigate to `localhost:3000` in your browser URL to access the chatbot
+4. Add a `.env` file to the `openai-api` directory
+5. Including the following in your `.env` file (replacing the OPENAI_API_KEY value): ```
+OPENAI_API_KEY=xxx
+POSTGRES_USER=admin
+POSTGRES_PASSWORD=admin
+POSTGRES_DB=postgres
+POSTGRES_HOST=localhost```
+6. In a third terminal window, run `docker compose -f docker compose -f dc-local-db.yml up` from the root directory to start the database
+7. Navigate to `localhost:3000` in your browser URL to access the chatbot
