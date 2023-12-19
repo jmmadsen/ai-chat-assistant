@@ -11,9 +11,13 @@ const Answer = (props) => {
 
   useEffect(() => {
     const fetchData = async() => {
-      const res = await axios.post(`http://localhost:5000/${props.type}_chain_query`, { message: props.previousStep.message });
-      // after receiving API response, trigger next message (changing waitAction)
-      props.triggerNextStep({ value: res.data, trigger: `${props.type}-res` });
+      try {
+        const res = await axios.post(`http://localhost:5000/${props.type}_chain_query`, { message: props.previousStep.message });
+        // after receiving API response, trigger next message (changing waitAction)
+        props.triggerNextStep({ value: res.data, trigger: `${props.type}-res` });
+      } catch (e) {
+        props.triggerNextStep({ value: 'ERROR: cannot connect to backend API. Closing chat.', trigger: `error-res` });
+      }
     }
     fetchData()
   }, [])
@@ -83,6 +87,11 @@ const steps = [
     id: 'docs-res',
     message: '{previousValue}',
     trigger: 1
+  },
+  {
+    id: 'error-res',
+    message: '{previousValue}',
+    end: true
   }
 ];
 
