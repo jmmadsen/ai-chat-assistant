@@ -6,6 +6,8 @@ This project shows how you can use ChatGPT to query documents for qualitative in
 
 The bot in this project has been "trained" on a library of documents about the 2023 MLB season to learn qualitative information (MVP, etc.). It can also translate quantitative questions from users into SQL, querying the Postgresql database about batting averages to provide analysis.
 
+Check out the [demo recording](./ChatGPT%20MLB%20Assistant%20Demo.mov)!
+
 ## How Does It Work?
 ai-chat-assistant leverages the [Langchain library](https://www.langchain.com) to interact with ChatGPT. To answer qualitative questions, it loads various files (PDF, JSON, etc.) from a local directory. It then chunks and embeds these into a Vector Store database to optimize training and response performance.
 ![Screenshot vector store sharding](https://python.langchain.com/assets/images/vector_stores-125d1675d58cfb46ce9054c9019fea72.jpg)
