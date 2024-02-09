@@ -32,7 +32,12 @@ Additionally, the Free Tier of OpenAI API is too low for this project. This prog
 
 ### Docker
 1. Clone the repository onto your local machine
-2. Add your API Key from the instructions above to the `docker-compose.yml` file in the root folder, after the `- OPENAI_API_KEY=` environment variable. Save this file after updating
+2. Including the following in your `.env` file in the root directory (replacing the OPENAI_API_KEY value): ```
+OPENAI_API_KEY=xxx
+POSTGRES_USER=admin
+POSTGRES_PASSWORD=admin
+POSTGRES_DB=postgres
+POSTGRES_HOST=localhost```
 3. From the root directory, run `docker compose up`
 4. Navigate to `localhost` in your browser URL to access the chatbot
 
@@ -41,11 +46,11 @@ Additionally, the Free Tier of OpenAI API is too low for this project. This prog
 2. In a terminal window, navigate to the `web-ui` directory and run `npm start`
 3. In another terminal window, navigate to the `openai-api` directory and run `flask --app app run`
 4. Add a `.env` file to the `openai-api` directory
-5. Including the following in your `.env` file (replacing the OPENAI_API_KEY value): ```
+5. Including the following in your `.env` file in the root directory (replacing the OPENAI_API_KEY value): ```
 OPENAI_API_KEY=xxx
 POSTGRES_USER=admin
 POSTGRES_PASSWORD=admin
 POSTGRES_DB=postgres
 POSTGRES_HOST=localhost```
-6. In a third terminal window, run `docker compose -f docker compose -f dc-local-db.yml up` from the root directory to start the database
+6. In a third terminal window, run `docker compose -f dc-local-db.yml up` from the root directory to start the database
 7. Navigate to `localhost:3000` in your browser URL to access the chatbot

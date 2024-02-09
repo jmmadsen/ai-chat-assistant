@@ -30,4 +30,4 @@ services:
       - POSTGRES_PASSWORD=admin
       - POSTGRES_DB=postgres
       - POSTGRES_HOST=db
-      - OPENAI_API_KEY=xxx
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
